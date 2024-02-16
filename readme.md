@@ -62,7 +62,7 @@ vim .env
 After that run `upload.py` script:
 
 ```bash
-python src/app/upload.py -f <path_to_csv_file>
+python src/app/upload.py -w 150 -f <path_to_csv_file>
 ```
 
 ## Run server Fast API
