@@ -1,0 +1,1 @@
+select min(depth), max(depth) from image;
