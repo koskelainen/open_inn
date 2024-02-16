@@ -15,24 +15,36 @@ sys_path.append(PROJECT_FOLDER.absolute().as_posix())
 
 from app.main import app
 
+LOCAL_BASE_URL = "http://localhost:8000"
+
 
 @pytest.mark.anyio
 async def test_root():
-    async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+    async with AsyncClient(app=app, base_url=LOCAL_BASE_URL) as ac:
         response = await ac.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "root page"}
 
 
 @pytest.mark.anyio
-async def test_image():
-    async with AsyncClient(app=app, base_url="http://localhost:8000") as ac:
+async def test_image_colormap():
+    with open(TEST_FOLDER.joinpath("image_with_colormap.json").as_posix(), mode="r") as fd:
+        test_params, data = json.load(fd)
+    async with AsyncClient(app=app, base_url=LOCAL_BASE_URL) as ac:
         response = await ac.get("/image/",
-                                params=dict(depth_min=9050.1,
-                                            depth_max=9050.7,
-                                            colormap=2)
+                                params=test_params,
                                 )
     assert response.status_code == 200
-    with open(TEST_FOLDER.joinpath("dump.json").as_posix(), mode="r") as fd:
-        data = json.load(fd)
+    assert response.json() == data
+
+
+@pytest.mark.anyio
+async def test_image():
+    with open(TEST_FOLDER.joinpath("simple_image.json").as_posix(), mode="r") as fd:
+        test_params, data = json.load(fd)
+    async with AsyncClient(app=app, base_url=LOCAL_BASE_URL) as ac:
+        response = await ac.get("/image/",
+                                params=test_params,
+                                )
+    assert response.status_code == 200
     assert response.json() == data
