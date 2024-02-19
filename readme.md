@@ -3,7 +3,7 @@
 Project working with Conda venv.
 
 ```bash
-conda create -n open_inn python=3.10 
+conda create -n open_inn python=3.10
 conda activate open_inn
 ```
 
@@ -24,7 +24,7 @@ $ conda env update -n <your_env_name> --file environment.yml # update/install li
 ```
 manual command to create environments
 ```shell
-$ conda create -n <your_env_name> python=3.10 notebook pandas 
+$ conda create -n <your_env_name> python=3.10 pandas
 ```
 
 </details>
